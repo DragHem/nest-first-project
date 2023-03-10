@@ -54,6 +54,10 @@ export class BasketService {
   }
 
   getTotalPrice(): GetTotalPriceResponse {
+    if (!this.items.every((item) => this.shopService.hasProduct(item.name))) {
+      return { isSuccess: false };
+    }
+
     return this.items
       .map(
         (item) =>
