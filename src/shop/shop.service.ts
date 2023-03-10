@@ -12,7 +12,7 @@ export class ShopService {
       },
       {
         name: 'Samsung FE2020',
-        price: 3600,
+        price: 360,
         description: 'Samsung FE2020 description',
       },
       {
@@ -25,5 +25,9 @@ export class ShopService {
 
   hasProduct(name: string): boolean {
     return this.getProducts().some((item) => item.name === name);
+  }
+
+  getPriceOfProduct(name: string): number {
+    return this.getProducts().find((item) => item.name === name).price;
   }
 }
