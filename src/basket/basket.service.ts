@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AddProductDto } from './dto/add-product.dto';
 import {
   AddProductToBasketResponse,
   RemoveProductFromBasketResponse,
 } from '../interfaces/basket';
+import { ShopService } from '../shop/shop.service';
 
 @Injectable()
 export class BasketService {
   private items: AddProductDto[] = [];
+
+  constructor(@Inject(ShopService) private shopService: ShopService) {}
 
   add(item: AddProductDto): AddProductToBasketResponse {
     const { name, count } = item;
