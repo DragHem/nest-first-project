@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AddProductDto } from './dto/add-product.dto';
 import {
   AddProductToBasketResponse,
+  GetTotalPriceResponse,
   ListProductsInBasketResponse,
   RemoveProductFromBasketResponse,
 } from '../interfaces/basket';
@@ -50,5 +51,18 @@ export class BasketService {
 
   list(): ListProductsInBasketResponse {
     return this.items;
+  }
+
+  getTotalPrice(): GetTotalPriceResponse {
+    if (!this.items.every((item) => this.shopService.hasProduct(item.name))) {
+      return { isSuccess: false };
+    }
+
+    return this.items
+      .map(
+        (item) =>
+          this.shopService.getPriceOfProduct(item.name) * item.count * 1.23,
+      )
+      .reduce((prev, curr) => prev + curr, 0);
   }
 }
